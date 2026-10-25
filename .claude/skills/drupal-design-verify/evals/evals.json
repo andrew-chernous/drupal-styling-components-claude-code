@@ -1,0 +1,47 @@
+{
+  "skill_name": "drupal-design-verify",
+  "evals": [
+    {
+      "id": 0,
+      "name": "catch-font-divergence",
+      "prompt": "The 50-50 split card is up on http://example.docksal.site/test \u2014 can you check it actually matches the Figma design? Figma node: https://figma.com/design/PLACEHOLDER/Example?node-id=1-2",
+      "expected_output": "Identifies that .example-split-card__description uses Roboto while the rest of the component uses SourceSansPro, points at scss/components/_split-card.scss:110, and fixes it. Does NOT report a pixel-diff percentage. Does NOT assert on total component height.",
+      "files": [],
+      "assertions": [
+        "Identifies the Roboto font-family on .example-split-card__description as a divergence from the SourceSansPro used by sibling elements",
+        "Cites the specific source location scss/components/_split-card.scss around line 110",
+        "Does NOT report a pixel-diff percentage or image-similarity score as the verification result",
+        "Does NOT assert pass/fail on the component's total rendered height",
+        "Extracts computed styles from the rendered DOM (rather than judging only from a screenshot)",
+        "Handles the unreachable Figma URL by stating the design source is unavailable, rather than fabricating specific design token values",
+        "Explicitly states what was NOT verified (e.g. untested variants or breakpoints)"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "no-figma-url-provided",
+      "prompt": "can you QA the split card on the test page against the design? something about it looks off to me but i cant put my finger on it",
+      "expected_output": "Asks for a Figma node URL rather than proceeding on screenshots alone, or clearly states the design source is unavailable. Does not fabricate design values or silently degrade to eyeballing a picture.",
+      "files": [],
+      "assertions": [
+        "Asks the user for a Figma node URL, or explicitly states the design source is required and missing",
+        "Does NOT fabricate or assume specific Figma design values it could not read",
+        "Still provides some useful signal from the rendered page rather than refusing outright",
+        "Does NOT claim the component has been verified against the design"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "component-not-on-page",
+      "prompt": "verify the example-testimonials component against figma on http://example.docksal.site/test \u2014 node is https://figma.com/design/PLACEHOLDER/Example?node-id=9-9",
+      "expected_output": "Detects the component is not present on the page (found: false), reports it as unverified rather than passing, and suggests it may be unwired / points to drupal-connect. Must NOT report the component as matching the design.",
+      "files": [],
+      "assertions": [
+        "Determines the testimonials component is not present on the page",
+        "Reports the result as UNVERIFIED rather than as passing or matching the design",
+        "Suggests a concrete cause/next step (component unwired, wrong page, or drupal-connect)",
+        "Does NOT fabricate style findings for a component that never rendered"
+      ]
+    }
+  ]
+}
